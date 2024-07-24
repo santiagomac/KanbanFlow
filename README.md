@@ -1,7 +1,7 @@
 # Task Kanban Management D&D
 
 This is a project built by @santiagomac with **React Typescript** + **Tailwind** + **Vite**
-
+If you like don't forget give a ⭐
 
 ## POV
 
