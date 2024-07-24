@@ -76,20 +76,20 @@ function App() {
   };
 
   return (
-    <div className="relative dark:bg-slate-950 dark:text-white h-screen flex flex-col  font-customFont">
+    <div className="relative dark:bg-slate-950 dark:text-white h-full md:h-screen flex flex-col font-customFont pb-3">
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-col items-center mt-20">
-          <h1 className="text-4xl">Task Kanban Management</h1>
-          <p>This is an app developed with:</p>
-          <div className="flex flex-col ">
-            <span className="text-purple-500">- @Vite</span>
-            <span className="text-blue-500">- @Tailwind</span>
+        <div className="flex flex-col items-center mt-20 mb-5">
+          <h1 className="text-4xl text-center">Task Kanban Management</h1>
+          <p className="mb-2 md:mb-0">This is an app developed with:</p>
+          <div className="flex gap-x-4 flex-wrap w-[200px] md:w-1/2 text-center justify-center">
+            <span className="text-purple-500">@Vite</span>
+            <span className="text-blue-500">@Tailwind</span>
             <a
               href="https://www.npmjs.com/package/@hello-pangea/dnd"
               target="_blank"
               className="text-orange-300"
             >
-              - @hello-pangea/dnd
+              @hello-pangea/dnd
             </a>
           </div>
           <div className="absolute right-4 top-4 flex gap-x-5">
