@@ -9,6 +9,10 @@ export default {
     extend: {
       fontFamily: {
         customFont: ["JetBrainsMono", "sans-serif"]
+      },
+      screens: {
+        "2xsm": "300px",
+        "xsm": "378px"
       }
     },
   },

@@ -15,7 +15,7 @@ type Store = {
 };
 
 export const useStore = create<Store>()((set, get) => ({
-  initialData: initialData,
+  initialData: setInitalData(),
   isOpen: false,
   changeModalState: () => set((state) => ({ isOpen: !state.isOpen })),
   moveTask: (destination, source, draggableId) =>
@@ -90,6 +90,8 @@ function moveTask(
     },
   };
 
+  localStorage.setItem("data", JSON.stringify(newState));
+
   return newState;
 }
 
@@ -112,7 +114,17 @@ function addNewTask(initialData: InitialData, task: TaskItem) {
     },
   };
 
-  console.log("NEW STATE::: ", newState);
+  //Guardar en local storage
+  localStorage.setItem("data", JSON.stringify(newState));
 
+  //Actualizar el estado
   return newState;
+}
+
+function setInitalData() {
+  const data = localStorage.getItem("data");
+  if (data) {
+    return JSON.parse(data);
+  }
+  return initialData;
 }
