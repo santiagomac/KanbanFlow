@@ -10,7 +10,7 @@ interface Props {
 export const Column = ({ column, tasks = [] }: Props) => {
   return (
     <div
-      className={`border border-gray-300 dark:border-slate-800 dark:border-2 w-full p-5 rounded-lg shadow-lg md:h-2/3 md:w-1/3 ${
+      className={`bg-white dark:bg-slate-950 dark:border-slate-800 dark:border-2 w-full p-5 rounded-lg shadow-lg md:h-2/3 md:w-1/3 ${
         tasks.length === 0 ? "h-[100px]" : "h-full"
       }`}
     >

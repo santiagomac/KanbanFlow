@@ -1,13 +1,23 @@
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { useEffect, useState } from "react";
+import { BiMoon, BiPlus, BiSun } from "react-icons/bi";
+import { Button } from "./components/Button";
 import { Column } from "./components/Column";
-import { ColumnItem, InitialData, initialData } from "./initialData";
-import { useState } from "react";
-import { BiMoon, BiSun } from "react-icons/bi";
+import { Modal } from "./components/Modal";
+import { useStore } from "./zustand/store";
 
 function App() {
   const [dark, setDark] = useState<boolean>(false);
-  const [initialDataTodo, setInitalDataTodo] =
-    useState<InitialData>(initialData);
+  const initialDataTodo = useStore((state) => state.initialData);
+  const moveTask = useStore((state) => state.moveTask);
+  const isOpen = useStore((state) => state.isOpen);
+  const changeModalState = useStore((state) => state.changeModalState);
+
+  useEffect(() => {
+    const theme = localStorage.getItem("theme") || "light";
+    setDark(theme === "dark" ? true : false);
+    document.body.className = theme;
+  }, []);
 
   function onDragEnd(result: DropResult) {
     //TODO: reorder our column
@@ -20,65 +30,21 @@ function App() {
     )
       return;
 
-    const start = initialDataTodo.columns[source.droppableId];
-    const finish = initialDataTodo.columns[destination.droppableId];
-
-    if (start === finish) {
-      const newTasksIds = Array.from(start.taskIds);
-      newTasksIds.splice(source.index, 1);
-      newTasksIds.splice(destination.index, 0, draggableId);
-
-      const newColumn: ColumnItem = {
-        ...start,
-        taskIds: newTasksIds,
-      };
-
-      const newState: InitialData = {
-        ...initialDataTodo,
-        columns: {
-          ...initialDataTodo.columns,
-          [newColumn.id]: newColumn,
-        },
-      };
-      setInitalDataTodo(newState);
-      return;
-    }
-
-    const startTaskIds = Array.from(start.taskIds);
-    startTaskIds.splice(source.index, 1);
-    const newStart: ColumnItem = {
-      ...start,
-      taskIds: startTaskIds,
-    };
-
-    const finishTaskIds = Array.from(finish.taskIds);
-    finishTaskIds.splice(destination.index, 0, draggableId);
-    const newFinish: ColumnItem = {
-      ...finish,
-      taskIds: finishTaskIds,
-    };
-
-    const newState = {
-      ...initialDataTodo,
-      columns: {
-        ...initialDataTodo.columns,
-        [newStart.id]: newStart,
-        [newFinish.id]: newFinish,
-      },
-    };
-
-    setInitalDataTodo(newState);
+    moveTask(destination, source, draggableId);
   }
 
   const darkModeHandler = () => {
+    const theme = !dark ? "dark" : "light";
+    localStorage.setItem("theme", theme);
     setDark(!dark);
-    document.body.classList.toggle("dark");
+    document.body.className = theme;
   };
 
   return (
-    <div className="relative dark:bg-slate-950 dark:text-white h-full md:h-screen flex flex-col font-customFont pb-3">
+    <div className="h-full bg-slate-100 relative dark:bg-slate-950 dark:text-white flex flex-col font-customFont pb-3 sm:h-screen">
+      {isOpen && <Modal />}
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex flex-col items-center mt-20 mb-5">
+        <div className="flex flex-col items-center mt-20 mb-8 md:mb-0">
           <h1 className="text-4xl text-center">Task Kanban Management</h1>
           <p className="mb-2 md:mb-0">This is an app developed with:</p>
           <div className="flex gap-x-4 flex-wrap w-[200px] md:w-1/2 text-center justify-center">
@@ -109,7 +75,18 @@ function App() {
           </div>
         </div>
 
-        <div className="h-full flex flex-col md:flex-row md:gap-x-5 gap-y-4 px-3 items-center justify-center ">
+        <Button
+          title="Add new task"
+          className="absolute top-[262px] left-[10px] md:top-64 md:left-[10px] lg:top-60 lg:left-[10px]"
+          icon={
+            <BiPlus
+              className="dark:border dark:border-slate-800 rounded-full p-1"
+              size={25}
+            />
+          }
+          onClick={changeModalState}
+        />
+        <div className="h-full mt-10 md:mt-0 flex flex-col md:flex-row md:gap-x-5 gap-y-4 px-3 items-center justify-center ">
           {initialDataTodo.columnOrder.map((columnId) => {
             const column = initialDataTodo.columns[columnId];
             const tasks = column.taskIds.map(
