@@ -41,7 +41,7 @@ function App() {
   };
 
   return (
-    <div className="h-full bg-slate-100 relative dark:bg-slate-950 dark:text-white flex flex-col font-customFont pb-3 sm:h-screen">
+    <div className="h-screen bg-slate-100 dark:bg-slate-950 dark:text-white flex flex-col font-customFont sm:h-screen">
       {isOpen && <Modal />}
       <DragDropContext onDragEnd={onDragEnd}>
         <div className="flex flex-col items-center mt-20 mb-8 md:mb-0">
