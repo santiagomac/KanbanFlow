@@ -5,7 +5,7 @@
 @font-face {
     font-family: "JetBrainsMono";
     src: url("./assets/JetBrainsMono-VariableFont_wght.ttf");
-    font-weight: 700 900;
+    font-weight: 300 700 900;
 }
 
 #root {
